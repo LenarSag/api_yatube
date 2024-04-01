@@ -3,15 +3,6 @@ from rest_framework import serializers
 from posts.models import Post, Group, Comment
 
 
-# class UserSerializaer(serializers.ModelSerializer):
-#     username = serializers.CharField(source="author.username",
-# read_only=True)
-
-#     class Meta:
-#         model = User
-#         fields = ("username",)
-
-
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
@@ -23,7 +14,10 @@ class PostSerializer(serializers.ModelSerializer):
     group = serializers.PrimaryKeyRelatedField(
         queryset=Group.objects.all(), required=False
     )
-    pub_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False)
+    pub_date = serializers.DateTimeField(
+        format="%Y-%m-%d %H:%M:%S",
+        required=False
+    )
 
     class Meta:
         model = Post
@@ -40,7 +34,10 @@ class PostSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.StringRelatedField(read_only=True)
     post = serializers.PrimaryKeyRelatedField(read_only=True)
-    created = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False)
+    created = serializers.DateTimeField(
+        format="%Y-%m-%d %H:%M:%S",
+        required=False
+    )
 
     class Meta:
         model = Comment
