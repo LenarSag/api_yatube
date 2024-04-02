@@ -6,39 +6,24 @@ from posts.models import Post, Group, Comment
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = ("id", "title", "slug", "description")
+        fields = ("__all__")
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = serializers.StringRelatedField(read_only=True)
-    group = serializers.PrimaryKeyRelatedField(
-        queryset=Group.objects.all(), required=False
-    )
-    pub_date = serializers.DateTimeField(
-        format="%Y-%m-%d %H:%M:%S",
-        required=False
-    )
+    author = serializers.StringRelatedField()
+    group = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Post
-        fields = (
-            "id",
-            "text",
-            "author",
-            "image",
-            "group",
-            "pub_date",
-        )
+        fields = ("__all__")
+        read_only_fields = ("author",)
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.StringRelatedField(read_only=True)
+    author = serializers.StringRelatedField()
     post = serializers.PrimaryKeyRelatedField(read_only=True)
-    created = serializers.DateTimeField(
-        format="%Y-%m-%d %H:%M:%S",
-        required=False
-    )
 
     class Meta:
         model = Comment
-        fields = ("id", "author", "post", "text", "created")
+        fields = ("__all__")
+        read_only_fields = ("author",)
