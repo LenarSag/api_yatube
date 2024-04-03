@@ -36,18 +36,16 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
-    @classmethod
-    def get_post_or_404(cls, post_id):
+    def get_post_or_404(self):
+        post_id = self.kwargs.get("post_id")
         return get_object_or_404(Post, pk=post_id)
 
     def get_queryset(self):
-        post_id = self.kwargs.get("post_id")
-        self.get_post_or_404(post_id)
-        return self.queryset.filter(post=post_id)
+        post = self.get_post_or_404()
+        return self.queryset.filter(post=post.id)
 
     def perform_create(self, serializer):
-        post_id = self.kwargs.get("post_id")
-        post = self.get_post_or_404(post_id)
+        post = self.get_post_or_404()
         serializer.save(post=post, author=self.request.user)
 
     def update(self, request, *args, **kwargs):

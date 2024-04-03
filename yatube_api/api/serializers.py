@@ -11,8 +11,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     author = serializers.StringRelatedField()
-    group = serializers.SlugRelatedField(
-        slug_field="slug",
+    group = serializers.PrimaryKeyRelatedField(
         queryset=Group.objects.all(),
         allow_null=True,
         required=False
