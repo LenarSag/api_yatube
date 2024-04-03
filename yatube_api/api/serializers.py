@@ -11,7 +11,13 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     author = serializers.StringRelatedField()
-    group = serializers.PrimaryKeyRelatedField(read_only=True)
+    group = serializers.SlugRelatedField(
+        slug_field='slug',
+        queryset=Group.objects.all(),
+        allow_null=True,
+        required=False
+    )
+    image = serializers.ImageField(required=False)
 
     class Meta:
         model = Post
@@ -26,4 +32,3 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ("__all__")
-        read_only_fields = ("author",)
